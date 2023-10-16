@@ -1,0 +1,13 @@
+<div class="px-5 py-3 border-[1px] border-black w-[320px] text-center hover:border-[#2BAE66] hover:shadow-lg">
+    <img class="my-2" src="<%= product.image %>" alt="<%= product.name %>"/>
+    <div class="flex flex-col gap-3">
+        <div>
+            <h3 class="text-xl"><%= product.name %></h3>
+            <span class="text-gray-400 text-sm"><%= product.description %></span>
+        </div>
+        <div class="flex justify-between items-center">
+            <span class="text-xl">$<%= product.price %></span>
+            <button class="px-3 py-1.5 bg-[#2BAE66] text-[#FCF6F5] rounded-lg border-[1px] hover:bg-[#FCF6F5] hover:border-[#2BAE66] hover:text-[#2BAE66]">Add To Cart</button>
+        </div>
+    </div>
+</div>

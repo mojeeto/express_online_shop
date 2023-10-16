@@ -1,9 +1,13 @@
-import express from 'express'
+import express from "express";
+import shopRouter from "./routes/shop";
+import adminRouter from "./routes/admin";
 
 const expressApp = express();
 
-expressApp.use((req, res, next) => {
-	res.send("<h1>Hello, World!</h1>");
-});
+expressApp.set("view engine", "ejs");
+expressApp.use(express.static("public"));
+
+expressApp.use("/admin", adminRouter);
+expressApp.use(shopRouter);
 
 expressApp.listen(3000);

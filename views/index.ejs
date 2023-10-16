@@ -1,0 +1,12 @@
+<%- include("includes/head.ejs") %>
+    <h1 class="text-3xl">All Products</h1>
+    <% if (products.length > 0) { %>
+        <div class="my-5">
+            <% for (let product of products) { %>
+                <%- include("components/product-card.ejs", { product }) %>
+            <% } %>
+        </div>
+    <% } else { %> 
+        <h3 class="text-2xl my-5">Empty!</h3>
+    <% } %>
+<%- include("includes/end.ejs") %>
