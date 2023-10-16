@@ -1,4 +1,4 @@
-import { readFileFromStorage } from "../utils/filesystem";
+import { readFileFromStorage, writeFileFromStorage } from "../utils/filesystem";
 
 export default class Product {
   id: number;
@@ -6,6 +6,7 @@ export default class Product {
   price?: number;
   image?: string;
   description?: string;
+
   constructor(
     name: string,
     price?: number,
@@ -18,6 +19,16 @@ export default class Product {
     this.image = image;
     this.description = description;
   }
+
+  save() {
+    readFileFromStorage("products.json", (data: string) => {
+      let products = JSON.parse(data);
+      this.id = products.length + 1;
+      products.push(this);
+      writeFileFromStorage("products.json", JSON.stringify(products));
+    });
+  }
+
   static fetchAll(callback: Function) {
     readFileFromStorage("products.json", (data: string) => {
       callback(JSON.parse(data));
