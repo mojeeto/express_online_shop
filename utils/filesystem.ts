@@ -19,6 +19,6 @@ export const writeFile = (path: string, data: any) => {
   });
 };
 
-export const writeFileFromStorage = (fileName: string, cb: Function) => {
-  writeFile(path.join(STORAGE_DATA_DIR, fileName), cb);
+export const writeFileFromStorage = (fileName: string, data: any) => {
+  writeFile(path.join(STORAGE_DATA_DIR, fileName), data);
 };
