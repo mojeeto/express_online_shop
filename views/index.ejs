@@ -1,9 +1,9 @@
 <%- include("includes/head.ejs") %>
     <h1 class="text-3xl">All Products</h1>
     <% if (products.length > 0) { %>
-        <div class="my-5">
+        <div class="my-5 flex flex-wrap">
             <% for (let product of products) { %>
-                <%- include("components/product-card.ejs", { product }) %>
+                <%- include("components/product-card.ejs", { product, admin: false }) %>
             <% } %>
         </div>
     <% } else { %> 

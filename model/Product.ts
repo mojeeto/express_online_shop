@@ -10,8 +10,8 @@ export default class Product {
   constructor(
     name: string,
     price?: number,
-    image?: string,
-    description?: string
+    description?: string,
+    image?: string
   ) {
     this.id = 0;
     this.name = name;
@@ -24,6 +24,7 @@ export default class Product {
     readFileFromStorage("products.json", (data: string) => {
       let products = JSON.parse(data);
       this.id = products.length + 1;
+      this.image = "/images/products/default.png";
       products.push(this);
       writeFileFromStorage("products.json", JSON.stringify(products));
     });

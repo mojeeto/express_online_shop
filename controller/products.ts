@@ -11,7 +11,7 @@ export const getProducts: controller = (req, res, next) => {
   });
 };
 
-export const getAddProduct: controller = (req, res, next) => {
+export const getManageProduct: controller = (req, res, next) => {
   Product.fetchAll((products: object[]) => {
     res.render("pages/admin/products/manage-products", {
       fixTitle: "Manage Product",
@@ -19,4 +19,11 @@ export const getAddProduct: controller = (req, res, next) => {
       products,
     });
   });
+};
+
+export const postAddProduct: controller = (req, res, next) => {
+  const { productName, productPrice, productDescription } = req.body;
+  const product = new Product(productName, +productPrice, productDescription);
+  product.save();
+  res.status(301).redirect("/admin/manage-products");
 };

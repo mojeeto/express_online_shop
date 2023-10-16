@@ -1,16 +1,45 @@
 <%- include("../../../includes/head.ejs"); %>
     <div class="flex justify-between">
         <h1 class="text-3xl">Manage Products</h1>
-        <button class="px-1.5 rounded-full border-[1px] bg-[#2BAE66] hover:bg-[#FCF6F5] hover:border-[#2BAE66] text-[#FCF6F5] hover:text-[#2BAE66]">
+        <button data-modal-target="add-product-modal" data-modal-toggle="add-product-modal" class="px-1.5 rounded-full border-[1px] bg-[#2BAE66] hover:bg-[#FCF6F5] hover:border-[#2BAE66] text-[#FCF6F5] hover:text-[#2BAE66]">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
         </button>
     </div>
+    <div id="add-product-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="bg-white px-10 py-5 w-[350px]">
+            <h3 class="text-2xl">Add Product</h3>
+            <hr class="my-5" />
+            <form action="/admin/manage-products/add-product" method="post" class="flex flex-col gap-5">
+                <div class="flex flex-col gap-1">
+                    <label for="productName">Name:</label>
+                    <input id="productName" name="productName" type="text" class="border-[1px] border-[#2BAE66] outline-none px-3 py-2" />
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="productPrice">Price:</label>
+                    <input id="productPrice" name="productPrice" type="number" class="border-[1px] border-[#2BAE66] outline-none px-3 py-2" />
+                </div>
+                <div class="flex flex-col gap-">
+                    <label for="productDescription">Product Description:</label>
+                    <input id="productDecription" name="productDescription" type="text" class="border-[1px] border-[#2BAE66] outline-none px-3 py-2" />
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label for="productImage">Product Image Url:</label>
+                    <input id="productImageUrl" name="productImageUrl" type="text" class="border-[1px] border-[#2BAE66] outline-none px-3 py-2" />
+                </div>
+                <!-- <div class="flex flex-col gap-2">
+                    <label for="productImage">Product Image:</label>
+                    <input id="productImage" name="productImage" type="file" />
+                </div> -->
+                <button class="py-2 rounded-full border-[1px] bg-[#2BAE66] hover:bg-[#FCF6F5] hover:border-[#2BAE66] text-[#FCF6F5] hover:text-[#2BAE66]">Save</button>
+            </form>
+        </div>
+    </div>
     <% if (products.length > 0) { %>
-        <div class="my-5">
+        <div class="my-5 flex flex-wrap">
             <% for (let product of products) { %>
-                <%- include("components/product-card.ejs", { product }) %>
+                <%- include("../../../components/product-card.ejs", { product, admin: true }) %>
             <% } %>
         </div>
     <% } else { %> 
