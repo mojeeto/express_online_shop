@@ -44,9 +44,10 @@ export const postUpdateProduct: controller = (req, res, next) => {
     productName: name,
     productPrice: price,
     productDescription: description,
+    productImage: image,
   } = req.body;
   const productId = +req.params.id;
-  Product.updateById(+productId, { name, price, description }, () => {
+  Product.updateById(+productId, { name, price, description, image }, () => {
     res.status(200).redirect("/admin/manage-products");
   });
 };
