@@ -32,3 +32,10 @@ export const postAddProductToCart: controller = (req, res, next) => {
     res.status(200).redirect("/cart");
   });
 };
+
+export const postRemoveProductFromCart: controller = (req, res, next) => {
+  const { productId } = req.params;
+  Cart.removeProduct(+productId, () => {
+    res.status(200).redirect("/cart");
+  });
+};

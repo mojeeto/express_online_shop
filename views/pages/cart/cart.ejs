@@ -14,9 +14,13 @@
                             <span class="text-[#2BAE66] font-bold">$<%= product.price * product.count %></span>
                         </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <button class="flex-1 py-2 px-10 border-[1px] bg-[#2BAE66] hover:bg-[#FCF6F5] hover:border-[#2BAE66] text-[#FCF6F5] hover:text-[#2BAE66] ">Add</button>
-                        <button class="flex-1 py-2 border-[1px] bg-[#990011] hover:bg-[#FCF6F5] hover:border-[#990011] text-[#FCF6F5] hover:text-[#990011]">Delete</button>
+                    <div class="flex flex-col justify-center">
+                        <form action="/cart/add-product/<%= product.id %>" method="post">
+                            <button class="flex-1 py-2 px-10 border-[1px] bg-[#2BAE66] hover:bg-[#FCF6F5] hover:border-[#2BAE66] text-[#FCF6F5] hover:text-[#2BAE66]" type="submit">Add</button>
+                        </form>
+                        <form action="/cart/remove-product/<%= product.id %>" class="flex" method="post">
+                            <button class="flex-1 py-2 border-[1px] bg-[#990011] hover:bg-[#FCF6F5] hover:border-[#990011] text-[#FCF6F5] hover:text-[#990011]" type="submit">Delete</button>
+                        </form>
                     </div>
                 </div>
             <% } %>
