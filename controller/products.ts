@@ -40,10 +40,14 @@ export const postUpdateProduct: controller = (req, res, next) => {
     productDescription: description,
   } = req.body;
   const productId = +req.params.id;
-  Product.findProductById(+productId, () => {
-    const product = new Product({ id: productId, name, price, description });
-    product.update(() => {
-      res.status(200).redirect("/admin/manage-products");
-    });
+  Product.updateById(+productId, { name, price, description }, () => {
+    res.status(200).redirect("/admin/manage-products");
+  });
+};
+
+export const getDeleteProduct: controller = (req, res, next) => {
+  const productId = +req.params.id;
+  Product.deleteById(productId, () => {
+    res.status(200).redirect("/admin/manage-products");
   });
 };
