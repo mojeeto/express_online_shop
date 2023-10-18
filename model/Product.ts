@@ -1,4 +1,8 @@
-import { readFileFromStorage, writeFileFromStorage } from "../utils/filesystem";
+import {
+  WriteFileCallback,
+  readFileFromStorage,
+  writeFileFromStorage,
+} from "../utils/filesystem";
 
 type ProductProperties = {
   id?: number;
@@ -23,9 +27,9 @@ export default class Product {
     this.description = options.description || "Undefined";
   }
 
-  save(callBack: Function) {
-    readFileFromStorage("products.json", (data: string) => {
-      const products: Product[] = JSON.parse(data);
+  save(callBack: WriteFileCallback) {
+    readFileFromStorage("products.json", (err, data) => {
+      const products: Product[] = JSON.parse(data.toString());
       if (products.length > 0) this.id = products.at(-1)!.id + 1;
       else this.id = 1;
       products.push(this);
@@ -33,9 +37,9 @@ export default class Product {
     });
   }
 
-  update(callback: Function) {
-    readFileFromStorage("products.json", (data: string) => {
-      const products: Product[] = JSON.parse(data);
+  update(callback: WriteFileCallback) {
+    readFileFromStorage("products.json", (err, data) => {
+      const products: Product[] = JSON.parse(data.toString());
       products.forEach((product: Product) => {
         if (product.id === this.id) {
           product.name = this.name;
@@ -51,16 +55,15 @@ export default class Product {
   static updateById(
     id: number,
     options: ProductProperties,
-    callback: Function
+    callback: WriteFileCallback
   ) {
     const product = new Product({ id, ...options });
-    console.log(options);
     product.update(callback);
   }
 
-  delete(callback: Function) {
-    readFileFromStorage("products.json", (data: string) => {
-      const products: Product[] = JSON.parse(data);
+  delete(callback: WriteFileCallback) {
+    readFileFromStorage("products.json", (err, data) => {
+      const products: Product[] = JSON.parse(data.toString());
       const filteredProducts = products.filter(
         (product: Product) => product.id !== this.id
       );
@@ -72,23 +75,23 @@ export default class Product {
     });
   }
 
-  static deleteById(id: number, callback: Function) {
+  static deleteById(id: number, callback: WriteFileCallback) {
     const product = new Product({ id });
     product.delete(callback);
   }
 
-  static findProductById(id: number, callback: Function) {
-    readFileFromStorage("products.json", (data: string) => {
-      const products: Product[] = JSON.parse(data);
+  static findProductById(id: number, callback: (product: Product) => void) {
+    readFileFromStorage("products.json", (err, data) => {
+      const products: Product[] = JSON.parse(data.toString());
       const product = products.find((product: Product) => product.id === id);
       if (product) callback(product);
       else throw new Error("Product not Found!");
     });
   }
 
-  static fetchAll(callback: Function) {
-    readFileFromStorage("products.json", (data: string) => {
-      callback(JSON.parse(data));
+  static fetchAll(callback: (products: Product[]) => void) {
+    readFileFromStorage("products.json", (err, data) => {
+      callback(JSON.parse(data.toString()));
     });
   }
 }

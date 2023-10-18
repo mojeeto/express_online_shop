@@ -2,16 +2,16 @@
     <h1 class="text-3xl">Cart</h1>
     <div class="py-5 flex gap-5">
         <div class="flex flex-1 flex-col gap-5 overflow-y-auto cart-items h-[600px] snap-y">
-            <% for (let i=0; i<1; i++) { %>
+            <% for (const product of cartProducts) { %>
                 <div class="border-[1px] border-[#2BAE66] flex p-2 justify-between snap-start">
                     <div class="flex gap-5">
-                        <img src="/images/products/default.png" alt="product" class="h-[180px]"/>
+                        <img src="<%= product.image %>" alt="product" class="h-[180px]"/>
                         <div class="flex flex-col">
                             <div>
-                                <h3 class="text-xl font-bold">Product Name</h3>
-                                <span class="text-gray-400">$33.99 *3</span>
+                                <h3 class="text-xl font-bold"><%= product.name %></h3>
+                                <span class="text-gray-400">$<%= product.price %> *<%= product.count %></span>
                             </div>
-                            <span class="text-[#2BAE66] font-bold">$101.97</span>
+                            <span class="text-[#2BAE66] font-bold">$<%= product.price * product.count %></span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-1">
@@ -22,7 +22,7 @@
             <% } %>
         </div>
         <div class="flex-1">
-            <h2 class="text-2xl">Total Price: $101.97</h2>
+            <h2 class="text-2xl">Total Price: $<%= totalPrice %></h2>
         </div>
     </div>
     <script>

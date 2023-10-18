@@ -28,6 +28,7 @@ export const postAddProduct: controller = (req, res, next) => {
     productDescription: description,
     productImage: image,
   } = req.body;
+  console.log("ok");
   const product = new Product({
     name,
     price,
