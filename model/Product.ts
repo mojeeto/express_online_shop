@@ -26,9 +26,8 @@ export default class Product {
   save(callBack: Function) {
     readFileFromStorage("products.json", (data: string) => {
       const products: Product[] = JSON.parse(data);
-      if (products.length > 0) {
-        this.id = products.at(-1)!.id + 1;
-      }
+      if (products.length > 0) this.id = products.at(-1)!.id + 1;
+      else this.id = 1;
       products.push(this);
       writeFileFromStorage("products.json", JSON.stringify(products), callBack);
     });
@@ -37,7 +36,6 @@ export default class Product {
   update(callback: Function) {
     readFileFromStorage("products.json", (data: string) => {
       const products: Product[] = JSON.parse(data);
-      this.image = "/images/products/default.png";
       products.forEach((product: Product) => {
         if (product.id === this.id) {
           product.name = this.name;

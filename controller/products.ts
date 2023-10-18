@@ -26,8 +26,14 @@ export const postAddProduct: controller = (req, res, next) => {
     productName: name,
     productPrice: price,
     productDescription: description,
+    productImage: image,
   } = req.body;
-  const product = new Product({ name, price, description });
+  const product = new Product({
+    name,
+    price,
+    description,
+    image,
+  });
   product.save(() => {
     res.status(301).redirect("/admin/manage-products");
   });
