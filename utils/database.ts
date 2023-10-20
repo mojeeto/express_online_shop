@@ -1,6 +1,6 @@
 import mysql from "mysql2";
 
-export default mysql
+const dbConnection = mysql
   .createPool({
     host: "localhost",
     user: "mojeeto",
@@ -8,3 +8,5 @@ export default mysql
     database: "node_complete",
   })
   .promise();
+
+export default dbConnection;

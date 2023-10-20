@@ -1,3 +1,4 @@
+import dbConnection from "../utils/database";
 import {
   WriteFileCallback,
   readFileFromStorage,
@@ -8,7 +9,7 @@ type ProductProperties = {
   id?: number;
   name?: string;
   price?: number;
-  image?: string;
+  imageUrl?: string;
   description?: string;
 };
 
@@ -23,7 +24,7 @@ export default class Product {
     this.id = options.id || 0;
     this.name = options.name || "Undefined";
     this.price = options.price || 0;
-    this.image = options.image || "/images/products/default.png";
+    this.image = options.imageUrl || "/images/products/default.png";
     this.description = options.description || "Undefined";
   }
 
@@ -89,9 +90,7 @@ export default class Product {
     });
   }
 
-  static fetchAll(callback: (products: Product[]) => void) {
-    readFileFromStorage("products.json", (err, data) => {
-      callback(JSON.parse(data.toString()));
-    });
+  static fetchAll() {
+    return dbConnection.execute("SELECT * FROM products");
   }
 }
