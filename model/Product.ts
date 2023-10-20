@@ -17,25 +17,22 @@ export default class Product {
   id: number;
   name: string;
   price?: number;
-  image?: string;
+  imageUrl?: string;
   description?: string;
 
   constructor(options: ProductProperties) {
     this.id = options.id || 0;
     this.name = options.name || "Undefined";
     this.price = options.price || 0;
-    this.image = options.imageUrl || "/images/products/default.png";
+    this.imageUrl = options.imageUrl || "/images/products/default.png";
     this.description = options.description || "Undefined";
   }
 
-  save(callBack: WriteFileCallback) {
-    readFileFromStorage("products.json", (err, data) => {
-      const products: Product[] = JSON.parse(data.toString());
-      if (products.length > 0) this.id = products.at(-1)!.id + 1;
-      else this.id = 1;
-      products.push(this);
-      writeFileFromStorage("products.json", JSON.stringify(products), callBack);
-    });
+  save() {
+    return dbConnection.execute(
+      "INSERT INTO products (name, price, imageUrl, description) VALUES (?, ?, ?, ?);",
+      [this.name, this.price, this.imageUrl, this.description]
+    );
   }
 
   update(callback: WriteFileCallback) {
@@ -45,7 +42,7 @@ export default class Product {
         if (product.id === this.id) {
           product.name = this.name;
           product.price = this.price;
-          product.image = this.image;
+          product.imageUrl = this.imageUrl;
           product.description = this.description;
         }
       });

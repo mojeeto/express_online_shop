@@ -36,16 +36,20 @@ export const postAddProduct: controller = (req, res, next) => {
     productDescription: description,
     productImage: imageUrl,
   } = req.body;
-  console.log("ok");
   const product = new Product({
     name,
     price,
     description,
     imageUrl,
   });
-  product.save(() => {
-    res.status(301).redirect("/admin/manage-products");
-  });
+  product
+    .save()
+    .then(() => {
+      res.status(301).redirect("/admin/manage-products");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const postUpdateProduct: controller = (req, res, next) => {
