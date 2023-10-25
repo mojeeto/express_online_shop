@@ -1,5 +1,5 @@
 import Cart from "../models/Cart";
-import Product from "../models/product";
+import Product from "../models/Product";
 import controller from "./controller";
 
 export const getCart: controller = (req, res, next) => {};

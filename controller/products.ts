@@ -1,4 +1,4 @@
-import Product from "../models/product";
+import Product from "../models/Product";
 import controller from "./controller";
 
 export const getProducts: controller = (req, res, next) => {

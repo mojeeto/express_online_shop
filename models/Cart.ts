@@ -3,7 +3,7 @@ import {
   readFileFromStorage,
   writeFileFromStorage,
 } from "../utils/filesystem";
-import Product from "./product";
+import Product from "./Product";
 
 type ProductCart = {
   id: number;
