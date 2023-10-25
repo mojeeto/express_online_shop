@@ -9,6 +9,7 @@
   "author": "Mojeeto",
   "license": "ISC",
   "devDependencies": {
+    "@types/sequelize": "^4.28.17",
     "ejs": "^3.1.9",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1"

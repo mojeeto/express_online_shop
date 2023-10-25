@@ -1,12 +1,8 @@
-import mysql from "mysql2";
+import { Sequelize } from "sequelize";
 
-const dbConnection = mysql
-  .createPool({
-    host: "localhost",
-    user: "mojeeto",
-    password: "",
-    database: "node_complete",
-  })
-  .promise();
+const sequelize = new Sequelize("node_complete", "mojeeto", "", {
+  dialect: "mysql",
+  host: "localhost",
+});
 
-export default dbConnection;
+export default sequelize;

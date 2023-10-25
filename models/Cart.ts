@@ -3,7 +3,7 @@ import {
   readFileFromStorage,
   writeFileFromStorage,
 } from "../utils/filesystem";
-import Product from "./Product";
+import Product from "./product";
 
 type ProductCart = {
   id: number;
@@ -15,27 +15,7 @@ type CartProperty = {
   totalPrice: number;
 };
 export default class Cart {
-  static addProduct(productId: number, callback: WriteFileCallback) {
-    readFileFromStorage("cart.json", (err, data) => {
-      const cart: CartProperty = JSON.parse(data.toString());
-      Product.findProductById(productId, (product) => {
-        const productIndex = cart.products.findIndex(
-          (product) => product.id === productId
-        );
-        if (productIndex !== -1) {
-          cart.products[productIndex].count++;
-        } else if (product.price) {
-          cart.products.push({
-            id: product.id,
-            price: product.price,
-            count: 1,
-          });
-        }
-        cart.totalPrice = +product.price! + +cart.totalPrice.toFixed(2);
-        writeFileFromStorage("cart.json", JSON.stringify(cart), callback);
-      });
-    });
-  }
+  static addProduct(productId: number, callback: WriteFileCallback) {}
 
   static removeProduct(productId: number, callback: WriteFileCallback) {
     readFileFromStorage("cart.json", (err, data) => {
