@@ -3,6 +3,9 @@ import {
   CreationOptional,
   DataTypes,
   HasManyCreateAssociationMixin,
+  HasManyGetAssociationsMixin,
+  HasManyHasAssociationMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -18,6 +21,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare email: string;
 
   declare createProduct: HasManyCreateAssociationMixin<Product, "userId">;
+  declare getProducts: HasManyGetAssociationsMixin<Product>;
   declare static associations: {
     products: Association<User, Product>;
   };
