@@ -32,18 +32,21 @@ export const getManageProduct: controller = (req, res, next) => {
 export const postAddProduct: controller = (req, res, next) => {
   const { productName, productPrice, productDescription, productImage } =
     req.body;
-  Product.create({
-    title: productName,
-    description: productDescription,
-    price: productPrice,
-    imageUrl: productImage,
-  })
-    .then((result) => {
-      res.status(301).redirect("/admin/manage-products");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  if (req.user)
+    req.user
+      ?.createProduct({
+        title: productName,
+        description: productDescription,
+        price: productPrice,
+        imageUrl: productImage,
+      })
+      .then((result) => {
+        res.status(301).redirect("/admin/manage-products");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  else res.status(401).redirect("/");
 };
 
 export const postUpdateProduct: controller = (req, res, next) => {

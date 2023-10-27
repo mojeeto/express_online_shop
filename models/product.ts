@@ -1,20 +1,25 @@
 import {
+  CreationOptional,
   DataTypes,
+  ForeignKey,
   InferAttributes,
   InferCreationAttributes,
   Model,
 } from "sequelize";
 import sequelize from "../utils/database";
+import User from "./User";
 
 class Product extends Model<
   InferAttributes<Product>,
   InferCreationAttributes<Product>
 > {
-  declare id?: number;
+  declare id: CreationOptional<number>;
   declare title: string;
   declare price: number;
   declare description: string;
   declare imageUrl: string;
+
+  declare userId: ForeignKey<User["id"]>;
 }
 
 Product.init(

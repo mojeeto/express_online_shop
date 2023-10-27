@@ -1,20 +1,26 @@
 import {
+  Association,
+  CreationOptional,
   DataTypes,
+  HasManyCreateAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
 } from "sequelize";
 import sequelize from "../utils/database";
+import Product from "./Product";
 
-export default class User extends Model<
-  InferAttributes<User>,
-  InferCreationAttributes<User>
-> {
-  declare id?: number;
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  declare id: CreationOptional<number>;
   declare forename: string;
   declare surname: string;
-  declare age?: number;
+  declare age: CreationOptional<number>;
   declare email: string;
+
+  declare createProduct: HasManyCreateAssociationMixin<Product, "userId">;
+  declare static associations: {
+    products: Association<User, Product>;
+  };
 }
 
 User.init(
@@ -35,3 +41,5 @@ User.init(
     sequelize,
   }
 );
+
+export default User;
