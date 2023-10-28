@@ -1,4 +1,5 @@
 import Cart from "../models/Cart";
+import CartItem from "../models/CartItem";
 import Product from "../models/Product";
 import controller from "./controller";
 
@@ -58,5 +59,19 @@ export const postAddProductToCart: controller = (req, res, next) => {
 
 export const postRemoveProductFromCart: controller = (req, res, next) => {
   const { productId } = req.params;
-  res.status(200).redirect("/cart");
+  req
+    .user!.getCart()
+    .then((userCart) => userCart.getProducts({ where: { id: productId } }))
+    .then((cartProducts) => {
+      const product = cartProducts[0];
+      // @ts-ignore
+      const productCartItem: CartItem = product.cartItem;
+      return productCartItem.destroy();
+    })
+    .then(() => {
+      res.status(200).redirect("/cart");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
