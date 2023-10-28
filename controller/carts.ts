@@ -3,21 +3,21 @@ import Product from "../models/Product";
 import controller from "./controller";
 
 export const getCart: controller = (req, res, next) => {
+  let totalPrice = 0;
   req
     .user!.getCart()
     .then((cart) => cart.getProducts())
     .then((products) => {
-      if (products.length < 1) {
-        return res.status(200).render("pages/cart/cart", {
-          pageTitle: "Cart",
-          cartProducts: products,
-          totalPrice: 0,
-        });
-      }
+      products.forEach((product) => {
+        //@ts-ignore
+        const quantity = product.cartItem.quantity;
+        const price = product.price;
+        totalPrice += quantity * price;
+      });
       res.status(200).render("pages/cart/cart", {
         pageTitle: "Cart",
         cartProducts: products,
-        totalPrice: 0,
+        totalPrice,
       });
     })
     .catch((err) => {
@@ -36,19 +36,20 @@ export const postAddProductToCart: controller = (req, res, next) => {
       return userCart.getProducts({ where: { id: productId } });
     })
     .then((productsInCart) => {
-      if (!fetchedCart) throw new Error("");
       if (productsInCart.length > 0) {
         const product = productsInCart[0];
+        //@ts-ignore
+        const oldQuantity = product.cartItem.quantity;
+        newQuantity = oldQuantity + 1;
+        return product;
       }
       return Product.findByPk(productId);
     })
-    .then((foundedProduct) => {
-      if (foundedProduct) {
-        fetchedCart!.addProduct(foundedProduct, {
-          through: { quantity: newQuantity },
-        });
-        res.status(200).redirect("/cart");
-      }
+    .then((product) => {
+      fetchedCart!.addProduct(product!, {
+        through: { quantity: newQuantity },
+      });
+      res.status(200).redirect("/cart");
     })
     .catch((err) => {
       console.log(err);

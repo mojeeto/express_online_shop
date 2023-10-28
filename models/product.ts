@@ -22,7 +22,6 @@ class Product extends Model<
   declare imageUrl: string;
 
   declare userId: ForeignKey<User["id"]>;
-  declare cartItem?: CartItem;
 }
 
 Product.init(

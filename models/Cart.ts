@@ -15,7 +15,7 @@ class Cart extends Model<InferAttributes<Cart>, InferCreationAttributes<Cart>> {
   declare id: number;
   declare userId: ForeignKey<User["id"]>;
 
-  declare getProducts: BelongsToManyGetAssociationsMixin<Product[]>;
+  declare getProducts: BelongsToManyGetAssociationsMixin<Product>;
   declare addProduct: BelongsToManyCreateAssociationMixin<Product>;
 }
 
