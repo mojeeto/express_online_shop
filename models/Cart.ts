@@ -1,40 +1,37 @@
 import {
-  WriteFileCallback,
-  readFileFromStorage,
-  writeFileFromStorage,
-} from "../utils/filesystem";
+  BelongsToManyCreateAssociationMixin,
+  BelongsToManyGetAssociationsMixin,
+  DataTypes,
+  ForeignKey,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+} from "sequelize";
+import sequelize from "../utils/database";
+import User from "./User";
 import Product from "./Product";
 
-type ProductCart = {
-  id: number;
-  price: number;
-  count: number;
-};
-type CartProperty = {
-  products: ProductCart[];
-  totalPrice: number;
-};
-export default class Cart {
-  static addProduct(productId: number, callback: WriteFileCallback) {}
+class Cart extends Model<InferAttributes<Cart>, InferCreationAttributes<Cart>> {
+  declare id: number;
+  declare userId: ForeignKey<User["id"]>;
 
-  static removeProduct(productId: number, callback: WriteFileCallback) {
-    readFileFromStorage("cart.json", (err, data) => {
-      const cart: CartProperty = JSON.parse(data.toString());
-      cart.products = cart.products.filter((cartProduct) => {
-        if (cartProduct.id !== productId) return true;
-        cartProduct.count--;
-        cart.totalPrice = +cart.totalPrice.toFixed(2) - +cartProduct.price;
-        if (cartProduct.count === 0) return false;
-        return true;
-      });
-      writeFileFromStorage("cart.json", JSON.stringify(cart), callback);
-    });
-  }
-
-  static getCartItems(callback: (items: CartProperty) => void) {
-    readFileFromStorage("cart.json", (err, data) => {
-      const cart: CartProperty = JSON.parse(data.toString());
-      callback(cart);
-    });
-  }
+  declare getProducts: BelongsToManyGetAssociationsMixin<Product[]>;
+  declare addProduct: BelongsToManyCreateAssociationMixin<Product>;
 }
+
+Cart.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
+    },
+  },
+  {
+    modelName: "cart",
+    sequelize,
+  }
+);
+
+export default Cart;

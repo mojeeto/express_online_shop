@@ -8,6 +8,8 @@ import {
 } from "sequelize";
 import sequelize from "../utils/database";
 import User from "./User";
+import CartItem from "./CartItem";
+import Cart from "./Cart";
 
 class Product extends Model<
   InferAttributes<Product>,
@@ -20,6 +22,7 @@ class Product extends Model<
   declare imageUrl: string;
 
   declare userId: ForeignKey<User["id"]>;
+  declare cartItem?: CartItem;
 }
 
 Product.init(

@@ -5,6 +5,7 @@ import {
   HasManyCreateAssociationMixin,
   HasManyGetAssociationsMixin,
   HasManyHasAssociationMixin,
+  HasOneCreateAssociationMixin,
   HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
@@ -12,6 +13,7 @@ import {
 } from "sequelize";
 import sequelize from "../utils/database";
 import Product from "./Product";
+import Cart from "./Cart";
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<number>;
@@ -21,7 +23,9 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare email: string;
 
   declare createProduct: HasManyCreateAssociationMixin<Product, "userId">;
+  declare createCart: HasOneCreateAssociationMixin<Cart>;
   declare getProducts: HasManyGetAssociationsMixin<Product>;
+  declare getCart: HasOneGetAssociationMixin<Cart>;
   declare static associations: {
     products: Association<User, Product>;
   };
