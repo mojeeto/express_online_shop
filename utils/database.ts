@@ -1,8 +1,16 @@
-import { Sequelize } from "sequelize";
+import { MongoClient, ServerApiVersion } from "mongodb";
 
-const sequelize = new Sequelize("node_complete", "mojeeto", "", {
-  dialect: "mysql",
-  host: "localhost",
+const srvUrl =
+  "mongodb://localhost:27017";
+
+const client = new MongoClient(srvUrl, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
 });
 
-export default sequelize;
+const MongoConnect = () => client.connect();
+
+export default MongoConnect;
