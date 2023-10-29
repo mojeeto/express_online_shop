@@ -1,49 +1,34 @@
-import {
-  CreationOptional,
-  DataTypes,
-  ForeignKey,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-} from "sequelize";
-import sequelize from "../utils/database";
-import User from "./User";
-import CartItem from "./CartItem";
-import Cart from "./Cart";
+import { _db } from "../utils/database";
 
-class Product extends Model<
-  InferAttributes<Product>,
-  InferCreationAttributes<Product>
-> {
-  declare id: CreationOptional<number>;
+// product collection
+class Product {
+  declare id?: number;
   declare title: string;
   declare price: number;
   declare description: string;
   declare imageUrl: string;
 
-  declare userId: ForeignKey<User["id"]>;
-}
-
-Product.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      allowNull: false,
-      primaryKey: true,
-    },
-    title: DataTypes.STRING,
-    price: {
-      type: DataTypes.DOUBLE,
-      allowNull: false,
-    },
-    description: DataTypes.STRING,
-    imageUrl: DataTypes.STRING,
-  },
-  {
-    modelName: "product",
-    sequelize,
+  constructor(
+    title: string,
+    price: number,
+    description: string,
+    imageUrl: string
+  ) {
+    this.title = title;
+    this.price = price;
+    this.description = description;
+    this.imageUrl = imageUrl;
   }
-);
+
+  // save method for save intance of new product in db
+  save() {
+    return _db.collection("products").insertOne(this);
+  }
+
+  // fetch all products from db
+  static fetchAll() {
+    return _db.collection("products").find().toArray();
+  }
+}
 
 export default Product;

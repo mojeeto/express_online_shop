@@ -1,16 +1,30 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 
-const srvUrl =
-  "mongodb://localhost:27017";
+export let _db: Db;
+const srvUrl = "mongodb://localhost:27017/";
 
-const client = new MongoClient(srvUrl, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+export const MongoConnnet = (callback: VoidFunction) => {
+  MongoClient.connect(srvUrl)
+    .then((client) => {
+      _db = client.db("shop");
+      callback();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-const MongoConnect = () => client.connect();
+/*
 
-export default MongoConnect;
+export const mongoClient = new MongoClient(srvUrl);
+
+export const MongoConnnet = (callback: VoidFunction) => {
+  try {
+    _db = mongoClient.db("shop");
+    callback();
+  } catch (err) {
+    throw new Error("Error while connect to Database, Message: " + err);
+  }
+}; 
+
+*/
