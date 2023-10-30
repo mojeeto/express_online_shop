@@ -60,7 +60,7 @@ class User {
       let isProductExists = false;
       cart.products.forEach((product) => {
         if (product._id.equals(thisProduct._id)) {
-          product.count += 1;
+          product.count++;
           isProductExists = true;
         }
         cart.totalPrice += product.count * thisProduct.price;
@@ -72,7 +72,9 @@ class User {
     }
     cart.totalPrice = +cart.totalPrice.toFixed(2);
     // if does not exists any cart item
-    _db.collection("users").updateOne({ _id: this._id }, { $set: { cart } });
+    return _db
+      .collection("users")
+      .updateOne({ _id: this._id }, { $set: { cart } });
   }
 
   getCart() {
@@ -100,6 +102,27 @@ class User {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  deleteProductFromCart(targetProduct: Product) {
+    const cart = {
+      products: this.cart!.products,
+      totalPrice: 0,
+    };
+    const filteredCartProducts = cart.products.filter((product) => {
+      if (product._id.equals(targetProduct._id)) {
+        product.count--;
+        if (!product.count) return false;
+      }
+      cart.totalPrice += product.count * targetProduct.price;
+      return true;
+    });
+    cart.products = filteredCartProducts;
+    cart.totalPrice = +cart.totalPrice.toFixed(2);
+
+    return _db
+      .collection("users")
+      .updateOne({ _id: this._id }, { $set: { cart } });
   }
 
   static findById(userId: string) {

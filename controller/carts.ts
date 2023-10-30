@@ -27,7 +27,9 @@ export const postAddProductToCart: controller = (req, res, next) => {
         description: product!.description,
         imageUrl: product!.imageUrl,
       });
-      req.user?.addToCart(targetProduct);
+      return req.user!.addToCart(targetProduct);
+    })
+    .then((result) => {
       res.status(200).redirect("/cart");
     })
     .catch((err) => {
@@ -37,5 +39,21 @@ export const postAddProductToCart: controller = (req, res, next) => {
 
 export const postRemoveProductFromCart: controller = (req, res, next) => {
   const { productId } = req.params;
-  res.status(200).redirect("/cart");
+  Product.findById(productId)
+    .then((product) => {
+      const targetProduct = new Product({
+        _id: productId,
+        title: product!.title,
+        price: product!.price,
+        description: product!.description,
+        imageUrl: product!.imageUrl,
+      });
+      return req.user!.deleteProductFromCart(targetProduct);
+    })
+    .then((result) => {
+      res.status(200).redirect("/cart");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
