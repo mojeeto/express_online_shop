@@ -2,11 +2,18 @@ import Product from "../models/Product";
 import controller from "./controller";
 
 export const getCart: controller = (req, res, next) => {
-  res.status(200).render("pages/cart/cart", {
-    pageTitle: "Cart",
-    cartProducts: [],
-    totalPrice: 0,
-  });
+  req
+    .user!.getCart()
+    .then((cart) => {
+      res.status(200).render("pages/cart/cart", {
+        pageTitle: "Cart",
+        cartProducts: cart!.products,
+        totalPrice: cart!.totalPrice,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const postAddProductToCart: controller = (req, res, next) => {

@@ -1,5 +1,5 @@
 import { _db } from "../utils/database";
-import { ObjectId, OptionalId } from "mongodb";
+import { ObjectId, OptionalId, WithId } from "mongodb";
 import Product from "./Product";
 
 type ProductInCartItemType = {
@@ -9,7 +9,7 @@ type ProductInCartItemType = {
 
 export type CartItemProperties = {
   products: ProductInCartItemType[];
-  quantity: number;
+  totalPrice: number;
 };
 
 export type UserProperties = {
@@ -50,29 +50,56 @@ class User {
           count: 1,
         },
       ],
-      quantity: +thisProduct.price,
+      totalPrice: +thisProduct.price,
     };
     // add count and quntity if product exists
     // setup later
     if (this.cart && this.cart.products.length > 0) {
       cart.products = this.cart.products;
-      cart.quantity = 0;
+      cart.totalPrice = 0;
       let isProductExists = false;
       cart.products.forEach((product) => {
         if (product._id.equals(thisProduct._id)) {
           product.count += 1;
           isProductExists = true;
         }
-        cart.quantity += product.count * thisProduct.price;
+        cart.totalPrice += product.count * thisProduct.price;
       });
       if (!isProductExists) {
         cart.products.push({ _id: thisProduct._id, count: 1 });
-        cart.quantity += thisProduct.price;
+        cart.totalPrice += thisProduct.price;
       }
     }
-    cart.quantity = +cart.quantity.toFixed(2);
+    cart.totalPrice = +cart.totalPrice.toFixed(2);
     // if does not exists any cart item
     _db.collection("users").updateOne({ _id: this._id }, { $set: { cart } });
+  }
+
+  getCart() {
+    const productIdsInUserCart = this.cart!.products.map(
+      (product) => product._id
+    );
+    return _db
+      .collection("products")
+      .find({ _id: { $in: productIdsInUserCart } })
+      .toArray()
+      .then((allProducts) => {
+        const products = allProducts.map((eachProduct) => {
+          const indexOfProductInUserCart = this.cart!.products.findIndex(
+            (product) => product._id.equals(eachProduct._id)
+          );
+          const count = this.cart!.products[indexOfProductInUserCart].count;
+          const cost = +eachProduct!.price * count;
+          return { ...eachProduct, count, cost: cost.toFixed(2) };
+        });
+        return {
+          products: products,
+          totalPrice: this.cart!.totalPrice,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   static findById(userId: string) {
