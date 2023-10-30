@@ -7,6 +7,7 @@ export type ProductProperties = {
   description: string;
   imageUrl: string;
   _id?: string;
+  userId?: ObjectId;
 };
 
 // product collection
@@ -16,6 +17,7 @@ class Product {
   declare price: number;
   declare description: string;
   declare imageUrl: string;
+  declare userId: OptionalId<ObjectId>;
 
   constructor(options: ProductProperties) {
     this.title = options.title;
@@ -23,6 +25,7 @@ class Product {
     this.description = options.description;
     this.imageUrl = options.imageUrl;
     if (options._id) this._id = new ObjectId(options._id);
+    if (options.userId) this.userId = options.userId;
   }
 
   // save method for save intance of new product in db

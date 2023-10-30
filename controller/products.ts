@@ -40,6 +40,7 @@ export const postAddProduct: controller = (req, res, next) => {
     price: productPrice,
     description: productDescription,
     imageUrl: productImage,
+    userId: req.user!._id,
   });
   newProduct
     .save()
@@ -62,6 +63,7 @@ export const postUpdateProduct: controller = (req, res, next) => {
     description: productDescription,
     imageUrl: productImage,
     _id: productId,
+    userId: req.user!._id,
   });
   updatedProduct
     .save()

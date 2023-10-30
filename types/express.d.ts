@@ -1,8 +1,8 @@
 import * as express from "express";
-import { Document } from "mongodb";
+import User from "../models/User";
 
 declare module "express-serve-static-core" {
   interface Request {
-    user: Document | null;
+    user: User | null;
   }
 }

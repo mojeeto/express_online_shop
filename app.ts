@@ -14,10 +14,21 @@ expressApp.use(express.static("public"));
 
 expressApp.use((req, res, next) => {
   if (!req.user)
-    User.findById("653f529e4bcf2aef5188fb59").then((user) => {
-      req.user = user;
-    });
-  next();
+    User.findById("653f529e4bcf2aef5188fb59")
+      .then((user) => {
+        req.user = new User({
+          _id: "653f529e4bcf2aef5188fb59",
+          email: user!.email,
+          forename: user!.forename,
+          surname: user!.surname,
+          age: user!.age,
+          cart: user!.cart,
+        });
+        next();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 });
 
 expressApp.use("/admin", adminRouter);
