@@ -35,12 +35,12 @@ export const getManageProduct: controller = (req, res, next) => {
 export const postAddProduct: controller = (req, res, next) => {
   const { productName, productPrice, productDescription, productImage } =
     req.body;
-  const newProduct = new Product(
-    productName,
-    productPrice,
-    productDescription,
-    productImage
-  );
+  const newProduct = new Product({
+    title: productName,
+    price: productPrice,
+    description: productDescription,
+    imageUrl: productImage,
+  });
   newProduct
     .save()
     .then(() => {
@@ -53,14 +53,35 @@ export const postAddProduct: controller = (req, res, next) => {
 
 // user
 export const postUpdateProduct: controller = (req, res, next) => {
+  const productId = req.params.id;
   const { productName, productPrice, productDescription, productImage } =
     req.body;
-  const productId = +req.params.id;
-  res.status(200).redirect("/admin/manage-products");
+  const updatedProduct = new Product({
+    title: productName,
+    price: productPrice,
+    description: productDescription,
+    imageUrl: productImage,
+    _id: productId,
+  });
+  updatedProduct
+    .save()
+    .then(() => {
+      res.status(200).redirect("/admin/manage-products");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // user
 export const getDeleteProduct: controller = (req, res, next) => {
-  const productId = +req.params.id;
-  res.status(200).redirect("/admin/manage-products");
+  const productId = req.params.id;
+  Product.deleteById(productId)
+    .then((product) => {
+      console.log("Product Deleted");
+      res.status(200).redirect("/admin/manage-products");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
