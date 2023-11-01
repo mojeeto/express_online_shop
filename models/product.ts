@@ -1,17 +1,29 @@
-import { Schema, Model, model } from "mongoose";
+import { Schema, model, Types, InferSchemaType } from "mongoose";
 
-export interface IProduct {
-  title: string;
-  price: number;
-  description: string;
-  imageUrl: string;
-}
-
-const ProductSchema = new Schema<IProduct>({
-  title: String,
-  price: Number,
-  description: String,
-  imageUrl: String,
+const ProductSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
 });
 
-export default model<IProduct>("Product", ProductSchema);
+type ProductTypeInfer = InferSchemaType<typeof ProductSchema>;
+
+export default model<ProductTypeInfer>("Product", ProductSchema);
