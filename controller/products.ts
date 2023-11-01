@@ -1,9 +1,9 @@
-import Product from "../models/Product";
 import controller from "./controller";
+import Product from "../models/product";
 
 // global
 export const getProducts: controller = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render("index", {
         pageTitle: "Home",
@@ -18,7 +18,7 @@ export const getProducts: controller = (req, res, next) => {
 
 // user
 export const getManageProduct: controller = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render("pages/admin/products/manage-products", {
         fixTitle: "Manage Product",
@@ -40,7 +40,6 @@ export const postAddProduct: controller = (req, res, next) => {
     price: productPrice,
     description: productDescription,
     imageUrl: productImage,
-    userId: req.user!._id,
   });
   newProduct
     .save()
@@ -78,9 +77,9 @@ export const postUpdateProduct: controller = (req, res, next) => {
 // user
 export const getDeleteProduct: controller = (req, res, next) => {
   const productId = req.params.id;
-  Product.deleteById(productId)
+  Product.findByIdAndDelete(productId)
     .then((product) => {
-      console.log("Product Deleted");
+      console.log("Product Deleted", product);
       res.status(200).redirect("/admin/manage-products");
     })
     .catch((err) => {
