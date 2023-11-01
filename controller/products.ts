@@ -56,17 +56,15 @@ export const postUpdateProduct: controller = (req, res, next) => {
   const productId = req.params.id;
   const { productName, productPrice, productDescription, productImage } =
     req.body;
-  const updatedProduct = new Product({
-    title: productName,
-    price: productPrice,
-    description: productDescription,
-    imageUrl: productImage,
-    _id: productId,
-    userId: req.user!._id,
-  });
-  updatedProduct
-    .save()
-    .then(() => {
+  Product.findByIdAndUpdate(productId)
+    .then((product) => {
+      product!.title = productName;
+      product!.price = productPrice;
+      product!.description = productDescription;
+      product!.imageUrl = productImage;
+      return product!.save();
+    })
+    .then((resultOfSave) => {
       res.status(200).redirect("/admin/manage-products");
     })
     .catch((err) => {
