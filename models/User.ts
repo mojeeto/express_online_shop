@@ -17,6 +17,7 @@ export interface IUser extends Document {
   cart: IUserCart;
   addToCart: (product: IProduct) => Promise<IUser>;
   removeFromCart: (product: IProduct) => Promise<IUser>;
+  clearCart: () => Promise<IUser>;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -82,6 +83,11 @@ UserSchema.methods.removeFromCart = function (product: IProduct) {
   });
   cart.totalPrice = +cart.totalPrice.toFixed(2);
   this.cart = cart;
+  return this.save();
+};
+
+UserSchema.methods.clearCart = function () {
+  this.cart = { products: [], totalPrice: 0 };
   return this.save();
 };
 
