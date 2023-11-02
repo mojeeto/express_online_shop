@@ -1,6 +1,18 @@
-import { Schema, model, Types, InferSchemaType } from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
 
-const ProductSchema = new Schema({
+export const isProduct = (obj: IProduct | any): obj is IProduct => {
+  return obj && obj.price && typeof obj.price === "number";
+};
+
+export interface IProduct extends Document {
+  title: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+  userId: Types.ObjectId;
+}
+
+const ProductSchema = new Schema<IProduct>({
   title: {
     type: String,
     required: true,
@@ -24,6 +36,4 @@ const ProductSchema = new Schema({
   },
 });
 
-type ProductTypeInfer = InferSchemaType<typeof ProductSchema>;
-
-export default model<ProductTypeInfer>("Product", ProductSchema);
+export default model<IProduct>("Product", ProductSchema);
