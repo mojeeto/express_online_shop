@@ -16,7 +16,7 @@ export const getCart: controller = (req, res, next) => {
       });
       res.status(200).render("pages/cart/cart", {
         pageTitle: "Cart",
-        cartProducts: products,
+        cartProducts: { products, userId: req.user!._id },
         totalPrice: user.cart.totalPrice,
       });
     })

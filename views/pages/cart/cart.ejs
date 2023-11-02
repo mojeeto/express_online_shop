@@ -4,7 +4,7 @@
   <div
     class="flex flex-1 flex-col gap-5 overflow-y-auto cart-items h-[600px] snap-y"
   >
-    <% for (const product of cartProducts) { %>
+    <% for (const product of cartProducts.products) { %>
     <div
       class="border-[1px] border-[#2BAE66] flex p-2 justify-between snap-start"
     >
@@ -49,8 +49,16 @@
     </div>
     <% } %>
   </div>
-  <div class="flex-1">
+  <div class="flex-1 gap-5 flex flex-col">
     <h2 class="text-2xl">Total Price: $<%= totalPrice %></h2>
+    <form action="/orders/<%= cartProducts.userId %>" method="post">
+      <button
+        class="flex-1 py-2 px-10 border-[1px] hover:bg-[#2BAE66] bg-[#FCF6F5] border-[#2BAE66] hover:text-[#FCF6F5] text-[#2BAE66]"
+        type="submit"
+      >
+        Order
+      </button>
+    </form>
   </div>
 </div>
 <script>

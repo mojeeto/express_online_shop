@@ -1,4 +1,5 @@
-import { Schema, model, Types, Document } from "mongoose";
+import { Schema, model, Document, PopulatedDoc } from "mongoose";
+import { IUser } from "./user";
 
 export const isProduct = (obj: IProduct | any): obj is IProduct => {
   return obj && obj.price && typeof obj.price === "number";
@@ -9,7 +10,7 @@ export interface IProduct extends Document {
   price: number;
   description: string;
   imageUrl: string;
-  userId: Types.ObjectId;
+  userId: PopulatedDoc<IUser & Document>;
 }
 
 const ProductSchema = new Schema<IProduct>({

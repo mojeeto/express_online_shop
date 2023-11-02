@@ -6,7 +6,7 @@ type IUserCartProductItem = {
   count: number;
 };
 
-type IUserCart = {
+export type IUserCart = {
   products: IUserCartProductItem[];
   totalPrice: number;
 };
