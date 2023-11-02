@@ -40,5 +40,14 @@ export const postAddProductToCart: controller = (req, res, next) => {
 };
 
 export const postRemoveProductFromCart: controller = (req, res, next) => {
-  res.status(200).redirect("/cart");
+  Product.findById(req.params.productId)
+    .then((product) => {
+      return req.user!.removeFromCart(product!);
+    })
+    .then((user) => {
+      res.status(200).redirect("/cart");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
