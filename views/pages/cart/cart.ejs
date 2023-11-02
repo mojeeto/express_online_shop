@@ -9,12 +9,16 @@
       class="border-[1px] border-[#2BAE66] flex p-2 justify-between snap-start"
     >
       <div class="flex gap-5">
-        <img src="<%= product.imageUrl %>" alt="product" class="h-[180px]" />
+        <img
+          src="<%= product._doc.imageUrl %>"
+          alt="product"
+          class="h-[180px]"
+        />
         <div class="flex flex-col">
           <div>
-            <h3 class="text-xl font-bold"><%= product.title %></h3>
+            <h3 class="text-xl font-bold"><%= product._doc.title %></h3>
             <span class="text-gray-400"
-              >$<%= product.price %> *<%= product.count %></span
+              >$<%= product._doc.price %> *<%= product.count %></span
             >
           </div>
           <span class="text-[#2BAE66] font-bold">$<%= product.cost %></span>
