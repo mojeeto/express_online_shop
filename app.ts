@@ -4,6 +4,7 @@ import adminRouter from "./routes/admin";
 import cartRouter from "./routes/cart";
 import orderRouter from "./routes/order";
 import authRouter from "./routes/auth";
+import session from "express-session";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import User from "./models/user";
@@ -13,6 +14,13 @@ const expressApp = express();
 expressApp.set("view engine", "ejs");
 expressApp.use(bodyParser.urlencoded({ extended: false }));
 expressApp.use(express.static("public"));
+expressApp.use(
+  session({
+    secret: "this is test long secret key for hashing session id",
+    saveUninitialized: false,
+    resave: false,
+  })
+);
 
 expressApp.use((req, res, next) => {
   User.findById("65434995e49b9a1e49d1d1fa")
