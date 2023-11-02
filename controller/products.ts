@@ -18,7 +18,7 @@ export const getProducts: controller = (req, res, next) => {
 
 // user
 export const getManageProduct: controller = (req, res, next) => {
-  Product.find()
+  Product.find({ userId: req.user })
     .then((products) => {
       res.render("pages/admin/products/manage-products", {
         fixTitle: "Manage Product",
@@ -40,6 +40,7 @@ export const postAddProduct: controller = (req, res, next) => {
     price: productPrice,
     description: productDescription,
     imageUrl: productImage,
+    userId: req.user,
   });
   newProduct
     .save()
@@ -62,6 +63,7 @@ export const postUpdateProduct: controller = (req, res, next) => {
       product!.price = productPrice;
       product!.description = productDescription;
       product!.imageUrl = productImage;
+      product!.userId = req.user!.id;
       return product!.save();
     })
     .then((resultOfSave) => {
