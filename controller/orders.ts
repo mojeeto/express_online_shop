@@ -1,5 +1,5 @@
 import controller from "./controller";
 
 export const getOrders: controller = (req, res, next) => {
-  res.send("<h1>Orders</h1>");
+  res.render("pages/orders/index", { pageTitle: "orders", path: "/orders" });
 };
