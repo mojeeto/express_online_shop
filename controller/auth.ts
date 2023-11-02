@@ -9,3 +9,10 @@ export const postLogin: controller = (req, res, next) => {
   req.session.isLoggedIn = true;
   res.redirect("/");
 };
+
+export const logout: controller = (req, res, next) => {
+  req.session.destroy((err) => {
+    console.log("you are logged out!");
+    res.redirect("/");
+  });
+};
