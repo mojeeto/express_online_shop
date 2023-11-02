@@ -1,4 +1,5 @@
 import controller from "./controller";
+import User from "../models/user";
 
 export const getLogin: controller = (req, res, next) => {
   res.render("pages/auth/login", {
@@ -9,13 +10,21 @@ export const getLogin: controller = (req, res, next) => {
 };
 
 export const postLogin: controller = (req, res, next) => {
-  req.session.isAuthenticated = true;
-  res.redirect("/");
+  User.findById("65434995e49b9a1e49d1d1fa")
+    .then((user) => {
+      req.session.isAuthenticated = true;
+      req.session.user = user;
+      req.session.save((err) => {
+        res.redirect("/");
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const logout: controller = (req, res, next) => {
   req.session.destroy((err) => {
-    console.log("you are logged out!");
     res.redirect("/");
   });
 };
