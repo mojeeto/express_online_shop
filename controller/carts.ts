@@ -18,6 +18,7 @@ export const getCart: controller = (req, res, next) => {
         pageTitle: "Cart",
         cartProducts: { products, userId: req.user!._id },
         totalPrice: user.cart.totalPrice,
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((err) => {

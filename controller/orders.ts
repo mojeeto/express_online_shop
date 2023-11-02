@@ -8,6 +8,7 @@ export const getOrders: controller = (req, res, next) => {
         pageTitle: "orders",
         path: "/orders",
         orders,
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((err) => {

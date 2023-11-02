@@ -9,6 +9,7 @@ export const getProducts: controller = (req, res, next) => {
         pageTitle: "Home",
         path: "/",
         products,
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((err) => {
@@ -24,6 +25,7 @@ export const getManageProduct: controller = (req, res, next) => {
         fixTitle: "Manage Product",
         path: "/admin/manage-products",
         products,
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((err) => {

@@ -15,7 +15,7 @@
   <div class="flex flex-col gap-3">
     <div class="flex justify-between items-center">
       <span class="text-xl">$<%= product.price %></span>
-      <% if (!admin) { %>
+      <% if (!admin && isAuthenticated) { %>
       <form action="/cart/add-product/<%= product._id %>" method="post">
         <button
           class="px-3 py-1.5 bg-[#2BAE66] text-[#FCF6F5] rounded-lg border-[1px] hover:bg-[#FCF6F5] hover:border-[#2BAE66] hover:text-[#2BAE66]"
