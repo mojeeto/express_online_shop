@@ -4,8 +4,9 @@
         <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/" ? "border-white" : "hover:border-white" %>" href="/">Shop</a></li>
         <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/admin/manage-products" ? "border-white" : "hover:border-white" %>" href="/admin/manage-products">Manage Products</a></li>
     </ul>
-    <ul class="flex">
+    <ul class="flex flex-row-reverse">
         <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/cart" ? "border-white" : "hover:border-white" %>" href="/cart">Cart</a></li>
+        <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/orders" ? "border-white" : "hover:border-white" %>" href="/orders">Orders</a></li>
     </ul>
 </header>
 <main class="px-10 py-5">
