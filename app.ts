@@ -5,11 +5,16 @@ import cartRouter from "./routes/cart";
 import orderRouter from "./routes/order";
 import authRouter from "./routes/auth";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import User from "./models/user";
 
 const expressApp = express();
+const store = MongoStore.create({
+  mongoUrl: "mongodb://localhost:27017/shop",
+  collectionName: "sessions",
+});
 
 expressApp.set("view engine", "ejs");
 expressApp.use(bodyParser.urlencoded({ extended: false }));
@@ -19,6 +24,7 @@ expressApp.use(
     secret: "this is test long secret key for hashing session id",
     saveUninitialized: false,
     resave: false,
+    store,
   })
 );
 
