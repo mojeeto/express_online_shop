@@ -11,6 +11,7 @@
         <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/cart" ? "border-white" : "hover:border-white" %>" href="/cart">cart</a></li>
         <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/orders" ? "border-white" : "hover:border-white" %>" href="/orders">Orders</a></li>
 <% } else { %>
+        <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/auth/signup" ? "border-white" : "hover:border-white" %>" href="/auth/signup">signup</a></li>
         <li><a class="border-[1px] px-5 py-2 border-transparent <%= locals.path === "/auth/login" ? "border-white" : "hover:border-white" %>" href="/auth/login">login</a></li> <% } %>
     </ul>
 </header>

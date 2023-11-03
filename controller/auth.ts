@@ -23,6 +23,18 @@ export const postLogin: controller = (req, res, next) => {
     });
 };
 
+export const getSignup: controller = (req, res, next) => {
+  res.render("pages/auth/signup", {
+    pageTitle: "Signup",
+    path: "/auth/signup",
+    isAuthenticated: req.session.isAuthenticated,
+  });
+};
+
+export const postSignup: controller = (req, res, next) => {
+  res.redirect("/");
+};
+
 export const logout: controller = (req, res, next) => {
   req.session.destroy((err) => {
     res.redirect("/");
