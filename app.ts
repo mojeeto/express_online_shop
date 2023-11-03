@@ -6,6 +6,7 @@ import orderRouter from "./routes/order";
 import authRouter from "./routes/auth";
 import session from "express-session";
 import csurf from "csurf";
+import flash from "connect-flash";
 import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -43,9 +44,12 @@ expressApp.use((req, res, next) => {
     });
 });
 
+expressApp.use(flash());
+
 expressApp.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   res.locals.isAuthenticated = req.session.isAuthenticated;
+  res.locals.message = req.flash("message") || null;
   next();
 });
 
