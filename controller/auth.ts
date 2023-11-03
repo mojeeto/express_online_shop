@@ -3,10 +3,14 @@ import User from "../models/user";
 import { compare, hash } from "bcryptjs";
 
 export const getLogin: controller = (req, res, next) => {
-  res.render("pages/auth/login", {
-    pageTitle: "Login",
-    path: "/auth/login",
-  });
+  if (!req.session.isAuthenticated) {
+    res.render("pages/auth/login", {
+      pageTitle: "Login",
+      path: "/auth/login",
+    });
+  } else {
+    res.redirect("/");
+  }
 };
 
 export const postLogin: controller = (req, res, next) => {
@@ -43,11 +47,15 @@ export const postLogin: controller = (req, res, next) => {
 };
 
 export const getSignup: controller = (req, res, next) => {
-  res.render("pages/auth/signup", {
-    pageTitle: "Signup",
-    path: "/auth/signup",
-    isAuthenticated: req.session.isAuthenticated,
-  });
+  if (!req.session.isAuthenticated) {
+    res.render("pages/auth/signup", {
+      pageTitle: "Signup",
+      path: "/auth/signup",
+      isAuthenticated: req.session.isAuthenticated,
+    });
+  } else {
+    res.redirect("/");
+  }
 };
 
 export const postSignup: controller = (req, res, next) => {
