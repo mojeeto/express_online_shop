@@ -12,8 +12,8 @@ export type IUserCart = {
 };
 
 export interface IUser extends Document {
-  name: string;
   email: string;
+  password: string;
   cart: IUserCart;
   addToCart: (product: IProduct) => Promise<IUser>;
   removeFromCart: (product: IProduct) => Promise<IUser>;
@@ -21,32 +21,35 @@ export interface IUser extends Document {
 }
 
 const UserSchema = new Schema<IUser>({
-  name: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   cart: {
-    products: [
-      {
-        _id: {
-          type: Schema.Types.ObjectId,
-          required: true,
-          ref: "Product",
+    type: {
+      products: [
+        {
+          _id: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: "Product",
+          },
+          count: {
+            type: Number,
+            required: true,
+          },
         },
-        count: {
-          type: Number,
-          required: true,
-        },
+      ],
+      totalPrice: {
+        type: Number,
+        required: true,
       },
-    ],
-    totalPrice: {
-      type: Number,
-      required: true,
     },
+    default: { products: [], totalPrice: 0 },
   },
 });
 

@@ -10,7 +10,8 @@ export const getLogin: controller = (req, res, next) => {
 };
 
 export const postLogin: controller = (req, res, next) => {
-  User.findById("65434995e49b9a1e49d1d1fa")
+  const { email, password } = req.body;
+  User.findOne({ email, password })
     .then((user) => {
       req.session.isAuthenticated = true;
       req.session.user = user;
@@ -32,7 +33,21 @@ export const getSignup: controller = (req, res, next) => {
 };
 
 export const postSignup: controller = (req, res, next) => {
-  res.redirect("/");
+  const { email, password } = req.body;
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        const newUser = new User({ email, password });
+        return newUser.save();
+      }
+      res.redirect("/auth/signup");
+    })
+    .then((user) => {
+      res.redirect("/auth/login");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const logout: controller = (req, res, next) => {
