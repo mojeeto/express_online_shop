@@ -14,6 +14,8 @@ export type IUserCart = {
 export interface IUser extends Document {
   email: string;
   password: string;
+  resetToken: string;
+  resetTokenExpire: number;
   cart: IUserCart;
   addToCart: (product: IProduct) => Promise<IUser>;
   removeFromCart: (product: IProduct) => Promise<IUser>;
@@ -29,6 +31,8 @@ const UserSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
+  resetToken: String,
+  resetTokenExpire: Number,
   cart: {
     type: {
       products: [

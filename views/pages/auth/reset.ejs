@@ -1,0 +1,20 @@
+<%- include("../../includes/head.ejs") %>
+<h3 class="text-3xl">Reset Password Page</h3>
+<form
+  method="post"
+  action="/auth/reset"
+  class="flex flex-col w-[500px] mx-auto"
+>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  <div class="flex flex-col py-5">
+    <label for="email">Email:</label>
+    <input class="border-[1px] p-1" id="email" name="email" type="email" />
+  </div>
+  <button
+    class="flex-1 py-2 px-10 border-[1px] hover:bg-[#2BAE66] bg-[#FCF6F5] border-[#2BAE66] hover:text-[#FCF6F5] text-[#2BAE66]"
+    type="submit"
+  >
+    Reset
+  </button>
+</form>
+<%- include("../../includes/end.ejs")%>

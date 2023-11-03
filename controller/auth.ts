@@ -1,6 +1,7 @@
 import controller from "./controller";
 import User from "../models/user";
 import { compare, hash } from "bcryptjs";
+import crypto from "crypto";
 
 export const getLogin: controller = (req, res, next) => {
   if (!req.session.isAuthenticated) {
@@ -44,6 +45,41 @@ export const postLogin: controller = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+export const getReset: controller = (req, res, next) => {
+  res.render("pages/auth/reset", { pageTitle: "Reset Password" });
+};
+export const postReset: controller = (req, res, next) => {
+  const { email } = req.body;
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+      return res.redirect("/auth/reset");
+    }
+    const token = buffer.toString("hex");
+    User.findOne({ email })
+      .then((user) => {
+        if (!user) {
+          req.flash("message", ["error", "Email not found!"]);
+          res.redirect("/auth/reset");
+        } else {
+          user.resetToken = token;
+          user.resetTokenExpire = Date.now() + 3600000;
+          return user.save();
+        }
+      })
+      .then((user) => {
+        req.flash("message", [
+          "success",
+          `copy this url and use it as reset link: localhost:3000/auth/reset/${token}`,
+        ]);
+        res.redirect("/auth/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 };
 
 export const getSignup: controller = (req, res, next) => {
