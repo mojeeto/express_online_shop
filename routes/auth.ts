@@ -6,6 +6,7 @@ import {
   getSignup,
   postSignup,
 } from "../controller/auth";
+import isAuth from "../middleware/isAuth";
 
 const router = Router();
 
@@ -15,6 +16,6 @@ router.post("/login", postLogin);
 router.get("/signup", getSignup);
 router.post("/signup", postSignup);
 
-router.get("/logout", logout);
+router.get("/logout", isAuth, logout);
 
 export default router;

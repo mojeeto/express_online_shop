@@ -9,6 +9,7 @@ import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import User from "./models/user";
+import isAuth from "./middleware/isAuth";
 
 const expressApp = express();
 const store = MongoStore.create({
@@ -41,9 +42,9 @@ expressApp.use((req, res, next) => {
 });
 
 expressApp.use("/auth", authRouter);
-expressApp.use("/admin", adminRouter);
-expressApp.use("/cart", cartRouter);
-expressApp.use("/orders", orderRouter);
+expressApp.use("/admin", isAuth, adminRouter);
+expressApp.use("/cart", isAuth, cartRouter);
+expressApp.use("/orders", isAuth, orderRouter);
 expressApp.use("/", shopRouter);
 
 mongoose
