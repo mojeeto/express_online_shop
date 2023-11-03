@@ -2,6 +2,7 @@ import controller from "./controller";
 import User from "../models/user";
 import { compare, hash } from "bcryptjs";
 import crypto from "crypto";
+import { validationResult } from "express-validator";
 
 export const getLogin: controller = (req, res, next) => {
   if (!req.session.isAuthenticated) {
@@ -136,7 +137,6 @@ export const getSignup: controller = (req, res, next) => {
     res.render("pages/auth/signup", {
       pageTitle: "Signup",
       path: "/auth/signup",
-      isAuthenticated: req.session.isAuthenticated,
     });
   } else {
     res.redirect("/");
@@ -145,6 +145,15 @@ export const getSignup: controller = (req, res, next) => {
 
 export const postSignup: controller = (req, res, next) => {
   const { email, password } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    return res.render("pages/auth/signup", {
+      pageTitle: "Signup",
+      path: "/auth/signup",
+      errorMessage: errors.array(),
+    });
+  }
   User.findOne({ email })
     .then((user) => {
       if (!user) return hash(password, 12);

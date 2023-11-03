@@ -11,6 +11,7 @@ import {
   postNewPassword,
 } from "../controller/auth";
 import isAuth from "../middleware/isAuth";
+import { check } from "express-validator";
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.get("/reset/:resetToken", getNewPassword);
 router.post("/new-password", postNewPassword);
 
 router.get("/signup", getSignup);
-router.post("/signup", postSignup);
+router.post("/signup", check("email").isEmail(), postSignup);
 
 router.get("/logout", isAuth, logout);
 
