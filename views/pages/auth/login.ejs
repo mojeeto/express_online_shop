@@ -5,6 +5,7 @@
   action="/auth/login"
   class="flex flex-col w-[500px] mx-auto"
 >
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
   <div class="py-5 flex flex-col gap-5">
     <div class="flex flex-col">
       <label for="email">Email:</label>

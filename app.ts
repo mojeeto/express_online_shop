@@ -5,6 +5,7 @@ import cartRouter from "./routes/cart";
 import orderRouter from "./routes/order";
 import authRouter from "./routes/auth";
 import session from "express-session";
+import csurf from "csurf";
 import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -28,6 +29,7 @@ expressApp.use(
     store,
   })
 );
+expressApp.use(csurf());
 
 expressApp.use((req, res, next) => {
   if (!req.session.user) return next();
@@ -39,6 +41,12 @@ expressApp.use((req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+});
+
+expressApp.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
+  res.locals.isAuthenticated = req.session.isAuthenticated;
+  next();
 });
 
 expressApp.use("/auth", authRouter);

@@ -81,7 +81,6 @@ export const getDeleteProduct: controller = (req, res, next) => {
   const productId = req.params.id;
   Product.findByIdAndDelete(productId)
     .then((product) => {
-      console.log("Product Deleted", product);
       res.status(200).redirect("/admin/manage-products");
     })
     .catch((err) => {
