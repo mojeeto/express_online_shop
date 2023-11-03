@@ -7,6 +7,8 @@ import {
   postSignup,
   getReset,
   postReset,
+  getNewPassword,
+  postNewPassword,
 } from "../controller/auth";
 import isAuth from "../middleware/isAuth";
 
@@ -17,6 +19,8 @@ router.post("/login", postLogin);
 
 router.get("/reset", getReset);
 router.post("/reset", postReset);
+router.get("/reset/:resetToken", getNewPassword);
+router.post("/new-password", postNewPassword);
 
 router.get("/signup", getSignup);
 router.post("/signup", postSignup);

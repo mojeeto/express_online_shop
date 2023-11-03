@@ -50,6 +50,7 @@ export const postLogin: controller = (req, res, next) => {
 export const getReset: controller = (req, res, next) => {
   res.render("pages/auth/reset", { pageTitle: "Reset Password" });
 };
+
 export const postReset: controller = (req, res, next) => {
   const { email } = req.body;
   crypto.randomBytes(32, (err, buffer) => {
@@ -80,6 +81,54 @@ export const postReset: controller = (req, res, next) => {
         console.log(err);
       });
   });
+};
+
+export const getNewPassword: controller = (req, res, next) => {
+  const { resetToken } = req.params;
+  User.findOne({ resetToken, resetTokenExpire: { $gt: Date.now() } })
+    .then((user) => {
+      if (!user) return res.redirect("/");
+      res.render("pages/auth/reset", {
+        pageTitle: "Reset Password",
+        userId: user.id,
+        resetToken,
+      });
+    })
+    .catch((err) => {
+      console.log("err");
+    });
+};
+
+export const postNewPassword: controller = (req, res, next) => {
+  const { resetToken, userId, password } = req.body;
+  User.findOne({
+    _id: userId,
+    resetToken,
+    resetTokenExpire: { $gt: Date.now() },
+  })
+    .then((user) => {
+      if (user) {
+        hash(password, 12)
+          .then((hashedPassword) => {
+            user.resetToken = undefined;
+            user.resetTokenExpire = undefined;
+            user.password = hashedPassword;
+            return user.save();
+          })
+          .then((user) => {
+            req.flash("message", ["success", "Password changed!"]);
+            res.redirect("/auth/login");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        res.redirect("/");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const getSignup: controller = (req, res, next) => {

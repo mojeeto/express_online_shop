@@ -14,8 +14,8 @@ export type IUserCart = {
 export interface IUser extends Document {
   email: string;
   password: string;
-  resetToken: string;
-  resetTokenExpire: number;
+  resetToken?: string;
+  resetTokenExpire?: number;
   cart: IUserCart;
   addToCart: (product: IProduct) => Promise<IUser>;
   removeFromCart: (product: IProduct) => Promise<IUser>;
