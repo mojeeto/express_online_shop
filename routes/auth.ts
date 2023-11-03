@@ -11,7 +11,7 @@ import {
   postNewPassword,
 } from "../controller/auth";
 import isAuth from "../middleware/isAuth";
-import { check } from "express-validator";
+import { body, check } from "express-validator";
 
 const router = Router();
 
@@ -26,7 +26,15 @@ router.post("/new-password", postNewPassword);
 router.get("/signup", getSignup);
 router.post(
   "/signup",
-  check("email").isEmail().withMessage("Please enter valid email."),
+  [
+    check("email").isEmail().withMessage("Please enter valid email."),
+    body(
+      "password",
+      "please enter password with length 5 or more also just user number and character."
+    )
+      .isLength({ min: 5 })
+      .isAlphanumeric(),
+  ],
   postSignup
 );
 
