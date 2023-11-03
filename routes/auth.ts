@@ -12,6 +12,7 @@ import {
 } from "../controller/auth";
 import isAuth from "../middleware/isAuth";
 import { body, check } from "express-validator";
+import User from "../models/user";
 
 const router = Router();
 
@@ -27,7 +28,14 @@ router.get("/signup", getSignup);
 router.post(
   "/signup",
   [
-    check("email").isEmail().withMessage("Please enter valid email."),
+    check("email")
+      .isEmail()
+      .withMessage("Please enter valid email.")
+      .custom((value, { req }) => {
+        return User.findOne({ email: value }).then((user) => {
+          if (user) return Promise.reject("This email is exists!");
+        });
+      }),
     body(
       "password",
       "please enter password with length 5 or more also just user number and character."

@@ -154,12 +154,7 @@ export const postSignup: controller = (req, res, next) => {
       errorMessage: errors.array(),
     });
   }
-  User.findOne({ email })
-    .then((user) => {
-      if (!user) return hash(password, 12);
-      req.flash("message", ["error", "This email is exists!"]);
-      res.redirect("/auth/signup");
-    })
+  hash(password, 12)
     .then((hashedPassword) =>
       new User({ email, password: hashedPassword }).save()
     )
