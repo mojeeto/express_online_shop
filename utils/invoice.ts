@@ -39,7 +39,7 @@ function generateFooter(doc: typeof PDFDocumnet) {
     .text(
       "Payment is due within 15 days. Thank you for your business.",
       50,
-      780,
+      730,
       { align: "center", width: 500 }
     );
 }
