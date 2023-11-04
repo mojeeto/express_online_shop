@@ -17,6 +17,14 @@ export const getLogin: controller = (req, res, next) => {
 
 export const postLogin: controller = (req, res, next) => {
   const { email, password } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.render("pages/auth/login", {
+      pageTitle: "Login",
+      path: "/auth/login",
+      errorMessage: errors.array(),
+    });
+  }
   User.findOne({ email })
     .then((user) => {
       if (!user) {
@@ -147,7 +155,6 @@ export const postSignup: controller = (req, res, next) => {
   const { email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
     return res.render("pages/auth/signup", {
       pageTitle: "Signup",
       path: "/auth/signup",

@@ -17,7 +17,14 @@ import User from "../models/user";
 const router = Router();
 
 router.get("/login", getLogin);
-router.post("/login", postLogin);
+router.post(
+  "/login",
+  [
+    body("email").normalizeEmail().isEmail().trim(),
+    body("password").isAlphanumeric().trim(),
+  ],
+  postLogin
+);
 
 router.get("/reset", getReset);
 router.post("/reset", postReset);
