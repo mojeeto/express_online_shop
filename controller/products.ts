@@ -1,5 +1,6 @@
 import controller from "./controller";
 import Product from "../models/product";
+import { deleteProductImage } from "../utils/filesystem";
 
 // global
 export const getProducts: controller = (req, res, next) => {
@@ -35,6 +36,8 @@ export const getManageProduct: controller = (req, res, next) => {
 export const postAddProduct: controller = (req, res, next) => {
   const { productName, productPrice, productDescription } = req.body;
   const productImage = req.file;
+  if (!productImage)
+    req.flash("message", ["error", "your type error are not allowed"]);
 
   const newProduct = new Product({
     title: productName,
@@ -58,20 +61,21 @@ export const postUpdateProduct: controller = (req, res, next) => {
   const productId = req.params.id;
   const { productName, productPrice, productDescription } = req.body;
   const productImage = req.file;
+  if (!productImage)
+    req.flash("message", ["error", "your type error are not allowed"]);
   Product.findByIdAndUpdate(productId)
     .then((product) => {
       product!.title = productName;
       product!.price = productPrice;
       product!.description = productDescription;
-      product!.imagePath = productImage ? productImage.path : "";
-      product!.userId = req.user!.id;
+      if (productImage) product!.imagePath = productImage.path;
       return product!.save();
     })
     .then((resultOfSave) => {
       res.status(200).redirect("/admin/manage-products");
     })
     .catch((err) => {
-      next(new Error("Error while update product"));
+      console.log(err);
     });
 };
 
@@ -80,6 +84,9 @@ export const getDeleteProduct: controller = (req, res, next) => {
   const productId = req.params.id;
   Product.findByIdAndDelete(productId)
     .then((product) => {
+      deleteProductImage(product!.imagePath, (err) => {
+        if (err) throw new Error("Error while delete image product");
+      });
       res.status(200).redirect("/admin/manage-products");
     })
     .catch((err) => {

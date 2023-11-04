@@ -31,8 +31,9 @@ const filterMulterFile = (
   file: Express.Multer.File,
   cb: FileFilterCallback
 ) => {
-  if (file.mimetype !== "image/png") return cb(null, false);
-  cb(null, true);
+  if (["image/jpeg", "image/png"].find((item) => file.mimetype === item))
+    return cb(null, true);
+  cb(null, false);
 };
 
 expressApp.set("view engine", "ejs");
@@ -43,6 +44,7 @@ expressApp.use(
   )
 );
 expressApp.use(express.static("public"));
+expressApp.use("/images", express.static("images"));
 expressApp.use(
   session({
     secret: "this is test long secret key for hashing session id",
@@ -83,6 +85,7 @@ expressApp.use(errorsRouter);
 
 expressApp.use(
   (error: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log(error);
     res.redirect("/500");
   }
 );

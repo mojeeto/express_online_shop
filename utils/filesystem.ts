@@ -19,3 +19,10 @@ export const writeFileFromStorage = (
 ) => {
   fs.writeFile(path.join(STORAGE_DATA_DIR, fileName), data, cb);
 };
+
+export const deleteProductImage = (
+  imagePath: string | undefined,
+  cb: fs.NoParamCallback
+) => {
+  if (imagePath) fs.unlink(imagePath, cb);
+};

@@ -22,7 +22,7 @@ export const getCart: controller = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      next(err);
     });
 };
 

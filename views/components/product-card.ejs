@@ -4,7 +4,7 @@
   <div>
     <img
       class="my-2"
-      src="<%= product.imageUrl %>"
+      src="/<%= product.imagePath %>"
       alt="<%= product.title %>"
     />
     <div class="mb-2">
@@ -53,6 +53,7 @@
               action="/admin/manage-products/edit-product/<%= product._id %>"
               method="post"
               class="flex flex-col gap-5"
+              enctype="multipart/form-data"
             >
               <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
               <div class="flex flex-col gap-1">
@@ -90,9 +91,8 @@
                 <input
                   id="productImage"
                   name="productImage"
-                  type="text"
+                  type="file"
                   class="border-[1px] border-[#2BAE66] outline-none px-3 py-2"
-                  value="<%= product.imageUrl %>"
                 />
               </div>
               <div class="flex flex-col gap-2">
