@@ -9,11 +9,10 @@ export const getProducts: controller = (req, res, next) => {
         pageTitle: "Home",
         path: "/",
         products,
-        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((err) => {
-      console.log(err);
+      next(new Error("Error while get all product"));
     });
 };
 
@@ -25,24 +24,23 @@ export const getManageProduct: controller = (req, res, next) => {
         fixTitle: "Manage Product",
         path: "/admin/manage-products",
         products,
-        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((err) => {
-      console.log(err);
+      next(new Error("Error while get all product"));
     });
 };
 
 // user
 export const postAddProduct: controller = (req, res, next) => {
-  const { productName, productPrice, productDescription, productImage } =
-    req.body;
-  console.log("product image:", req.file);
+  const { productName, productPrice, productDescription } = req.body;
+  const productImage = req.file;
+
   const newProduct = new Product({
     title: productName,
     price: productPrice,
     description: productDescription,
-    imageUrl: productImage,
+    imagePath: productImage ? productImage.path : "",
     userId: req.user,
   });
   newProduct
@@ -58,14 +56,14 @@ export const postAddProduct: controller = (req, res, next) => {
 // user
 export const postUpdateProduct: controller = (req, res, next) => {
   const productId = req.params.id;
-  const { productName, productPrice, productDescription, productImage } =
-    req.body;
+  const { productName, productPrice, productDescription } = req.body;
+  const productImage = req.file;
   Product.findByIdAndUpdate(productId)
     .then((product) => {
       product!.title = productName;
       product!.price = productPrice;
       product!.description = productDescription;
-      product!.imageUrl = productImage;
+      product!.imagePath = productImage ? productImage.path : "";
       product!.userId = req.user!.id;
       return product!.save();
     })
@@ -73,7 +71,7 @@ export const postUpdateProduct: controller = (req, res, next) => {
       res.status(200).redirect("/admin/manage-products");
     })
     .catch((err) => {
-      console.log(err);
+      next(new Error("Error while update product"));
     });
 };
 
@@ -85,6 +83,6 @@ export const getDeleteProduct: controller = (req, res, next) => {
       res.status(200).redirect("/admin/manage-products");
     })
     .catch((err) => {
-      console.log(err);
+      next(new Error("Error while delete product"));
     });
 };

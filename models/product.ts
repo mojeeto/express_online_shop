@@ -9,7 +9,7 @@ export interface IProduct extends Document {
   title: string;
   price: number;
   description: string;
-  imageUrl: string;
+  imagePath?: string;
   userId: PopulatedDoc<IUser & Document>;
 }
 
@@ -26,10 +26,7 @@ const ProductSchema = new Schema<IProduct>({
     type: String,
     required: true,
   },
-  imageUrl: {
-    type: String,
-    required: true,
-  },
+  imagePath: String,
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
