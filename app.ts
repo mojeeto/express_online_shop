@@ -20,10 +20,15 @@ const store = MongoStore.create({
   mongoUrl: "mongodb://localhost:27017/shop",
   collectionName: "sessions",
 });
+const storageMulterFile = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "images"),
+  filename: (req, file, cb) =>
+    cb(null, `${new Date().toISOString()}-${file.originalname}`),
+});
 
 expressApp.set("view engine", "ejs");
 expressApp.use(bodyParser.urlencoded({ extended: false }));
-expressApp.use(multer().single("productImage"));
+expressApp.use(multer({ storage: storageMulterFile }).single("productImage"));
 expressApp.use(express.static("public"));
 expressApp.use(
   session({
