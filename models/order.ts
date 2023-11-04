@@ -8,7 +8,7 @@ type IOrderProductItem = {
 };
 
 export interface IOrder extends Document {
-  products: IOrderProductItem;
+  products: IOrderProductItem[];
   userId: PopulatedDoc<IUser & Document>;
   totalPrice: number;
 }
