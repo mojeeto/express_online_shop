@@ -4,15 +4,28 @@ import { deleteProductImage } from "../utils/filesystem";
 
 // global
 export const getProducts: controller = (req, res, next) => {
-  const page = req.query.page ? req.query.page : 1;
+  const page = req.query.page ? +req.query.page : 1;
+  let totalProducts = 0;
   Product.find()
-    .skip((+page - 1) * 2)
-    .limit(2)
+    .countDocuments()
+    .then((totalDocuments) => {
+      totalProducts = totalDocuments;
+      return Product.find()
+        .skip(page - 1)
+        .limit(1);
+    })
     .then((products) => {
       res.render("index", {
         pageTitle: "Home",
         path: "/",
         products,
+        totalProducts,
+        currentPage: page,
+        hasNextPage: page * 1 < totalProducts,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalProducts / 1),
       });
     })
     .catch((err) => {

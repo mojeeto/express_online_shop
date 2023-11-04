@@ -2,8 +2,28 @@
 <div class="flex gap-10">
   <h1 class="text-3xl">All Products</h1>
   <div class="flex gap-5">
-    <a class="p-1 border-2 border-[#2BAE66]" href="/?page=1">1</a
-    ><a class="p-1 border-2 border-[#2BAE66]" href="/?page=2">2</a>
+    <% if (currentPage !== 1 && previousPage !== 1) { %>
+    <a class="p-1 border-2 border-[#2BAE66]" href="?page=1">1</a>
+    <% } %> <% if (hasPreviousPage) { %>
+    <a class="p-1 border-2 border-[#2BAE66]" href="?page=<%= previousPage %>"
+      ><%= previousPage %></a
+    >
+    <% } %>
+    <a
+      class="p-1 border-2 border-[#2BAE66]"
+      href="?page=<%= currentPage %>"
+      class="active"
+      ><%= currentPage %></a
+    >
+    <% if (hasNextPage) { %>
+    <a class="p-1 border-2 border-[#2BAE66]" href="?page=<%= nextPage %>"
+      ><%= nextPage %></a
+    >
+    <% } %> <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+    <a class="p-1 border-2 border-[#2BAE66]" href="?page=<%= lastPage %>"
+      ><%= lastPage %></a
+    >
+    <% } %>
   </div>
 </div>
 <% if (products.length > 0) { %>
