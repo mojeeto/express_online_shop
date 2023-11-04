@@ -1,9 +1,10 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import shopRouter from "./routes/shop";
 import adminRouter from "./routes/admin";
 import cartRouter from "./routes/cart";
 import orderRouter from "./routes/order";
 import authRouter from "./routes/auth";
+import errorsRouter from "./routes/errors";
 import session from "express-session";
 import csurf from "csurf";
 import flash from "connect-flash";
@@ -58,6 +59,13 @@ expressApp.use("/admin", isAuth, adminRouter);
 expressApp.use("/cart", isAuth, cartRouter);
 expressApp.use("/orders", isAuth, orderRouter);
 expressApp.use("/", shopRouter);
+expressApp.use(errorsRouter);
+
+expressApp.use(
+  (error: Error, req: Request, res: Response, next: NextFunction) => {
+    res.redirect("/500");
+  }
+);
 
 mongoose
   .connect("mongodb://localhost:27017/shop")

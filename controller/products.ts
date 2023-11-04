@@ -50,7 +50,7 @@ export const postAddProduct: controller = (req, res, next) => {
       res.status(301).redirect("/admin/manage-products");
     })
     .catch((err) => {
-      console.log(err);
+      next(new Error("Error while add product"));
     });
 };
 

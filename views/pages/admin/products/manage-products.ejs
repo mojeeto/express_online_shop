@@ -36,6 +36,7 @@
       action="/admin/manage-products/add-product"
       method="post"
       class="flex flex-col gap-5"
+      enctype="multipart/form-data"
     >
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <div class="flex flex-col gap-1">
@@ -71,7 +72,7 @@
         <input
           id="productImage"
           name="productImage"
-          type="text"
+          type="file"
           class="border-[1px] border-[#2BAE66] outline-none px-3 py-2"
         />
       </div>
