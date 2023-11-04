@@ -4,7 +4,10 @@ import { deleteProductImage } from "../utils/filesystem";
 
 // global
 export const getProducts: controller = (req, res, next) => {
+  const page = req.query.page ? req.query.page : 1;
   Product.find()
+    .skip((+page - 1) * 2)
+    .limit(2)
     .then((products) => {
       res.render("index", {
         pageTitle: "Home",

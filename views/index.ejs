@@ -1,12 +1,18 @@
 <%- include("includes/head.ejs") %>
-    <h1 class="text-3xl">All Products</h1>
-    <% if (products.length > 0) { %>
-        <div class="my-5 flex flex-wrap gap-5">
-            <% for (let product of products) { %>
-                <%- include("components/product-card.ejs", { product, admin: false }) %>
-            <% } %>
-        </div>
-    <% } else { %> 
-        <h3 class="text-2xl my-5">Empty!</h3>
-    <% } %>
-<%- include("includes/end.ejs") %>
+<div class="flex gap-10">
+  <h1 class="text-3xl">All Products</h1>
+  <div class="flex gap-5">
+    <a class="p-1 border-2 border-[#2BAE66]" href="/?page=1">1</a
+    ><a class="p-1 border-2 border-[#2BAE66]" href="/?page=2">2</a>
+  </div>
+</div>
+<% if (products.length > 0) { %>
+<div class="flex flex-col items-center">
+  <div class="my-5 flex flex-wrap gap-5">
+    <% for (let product of products) { %> <%-
+    include("components/product-card.ejs", { product, admin: false }) %> <% } %>
+  </div>
+</div>
+<% } else { %>
+<h3 class="text-2xl my-5">Empty!</h3>
+<% } %> <%- include("includes/end.ejs") %>
