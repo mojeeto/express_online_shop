@@ -37,6 +37,7 @@ export const getManageProduct: controller = (req, res, next) => {
 export const postAddProduct: controller = (req, res, next) => {
   const { productName, productPrice, productDescription, productImage } =
     req.body;
+  console.log("product image:", req.file);
   const newProduct = new Product({
     title: productName,
     price: productPrice,

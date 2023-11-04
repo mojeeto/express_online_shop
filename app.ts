@@ -10,6 +10,7 @@ import csurf from "csurf";
 import flash from "connect-flash";
 import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
+import multer from "multer";
 import mongoose from "mongoose";
 import User from "./models/user";
 import isAuth from "./middleware/isAuth";
@@ -22,6 +23,7 @@ const store = MongoStore.create({
 
 expressApp.set("view engine", "ejs");
 expressApp.use(bodyParser.urlencoded({ extended: false }));
+expressApp.use(multer().single("productImage"));
 expressApp.use(express.static("public"));
 expressApp.use(
   session({
