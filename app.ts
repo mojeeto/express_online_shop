@@ -10,7 +10,7 @@ import csurf from "csurf";
 import flash from "connect-flash";
 import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
-import multer from "multer";
+import multer, { Field, FileFilterCallback } from "multer";
 import mongoose from "mongoose";
 import User from "./models/user";
 import isAuth from "./middleware/isAuth";
@@ -26,9 +26,22 @@ const storageMulterFile = multer.diskStorage({
     cb(null, `${new Date().toISOString()}-${file.originalname}`),
 });
 
+const filterMulterFile = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+) => {
+  if (file.mimetype !== "image/png") return cb(null, false);
+  cb(null, true);
+};
+
 expressApp.set("view engine", "ejs");
 expressApp.use(bodyParser.urlencoded({ extended: false }));
-expressApp.use(multer({ storage: storageMulterFile }).single("productImage"));
+expressApp.use(
+  multer({ storage: storageMulterFile, fileFilter: filterMulterFile }).single(
+    "productImage"
+  )
+);
 expressApp.use(express.static("public"));
 expressApp.use(
   session({
